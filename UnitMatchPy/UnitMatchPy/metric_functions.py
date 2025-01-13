@@ -768,9 +768,11 @@ def drift_n_sessions(candidate_pairs, session_switch, avg_centroid, avg_waveform
                                 (best_pairs[:,1] >= session_switch[did + 1]) * (best_pairs[:,1] < session_switch[did + 2]) ) == True)
 
             pairs = best_pairs[idx,:].squeeze()
-            if best_match == True:
+            if len(pairs.shape)!=2:
+                print('No pairs to perform drift correction')
+                continue
+            elif best_match == True:
                 pairs = get_good_matches(pairs, total_score)
-
             #Test to see if there are enough matches to do drift correction per shank
             if test_matches_per_shank(pairs, avg_centroid, did, param) == True and best_drift == True:
                 drifts = np.zeros( (n_sessions - 1, param['no_shanks'], 3))
